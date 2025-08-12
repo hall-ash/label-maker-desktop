@@ -1,0 +1,14 @@
+.button-div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.calculate-aliquots-btn {
+  font-size: 0.7em !important;
+  font-weight: 600 !important;
+  width: auto;
+  height: auto;
+  padding: 0.3em 0.7em !important;
+  margin-bottom: 0.4em;
+}
+

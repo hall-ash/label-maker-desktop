@@ -1,0 +1,29 @@
+const { contextBridge, ipcRenderer } = require('electron');
+
+contextBridge.exposeInMainWorld('electron', {
+  onOpenSettings: (callback) => ipcRenderer.on('open-settings-modal', callback),
+  handleOpenFileDialog: (callback) => ipcRenderer.invoke('open-file-dialog', callback),
+  onNavigateToAbout: (callback) => ipcRenderer.on('navigate-to-about', callback),
+  onNavigateToHome: (callback) => ipcRenderer.on('navigate-to-home', callback),
+  getLabelSettings: () => ipcRenderer.invoke('get-label-settings'),
+  setLabelSettings: (settings) => ipcRenderer.invoke('set-label-settings', settings),
+  isAutosaveEnabled: () => ipcRenderer.invoke('get-autosave-enabled'),
+  getLastSavePath: () => ipcRenderer.invoke('get-last-save-path'),
+  setLastSavePath: (newSavePath) => ipcRenderer.invoke('set-last-save-path', newSavePath), 
+  generatePDF: (data) => ipcRenderer.invoke('generate-pdf', data),
+  regeneratePDF: (data) => ipcRenderer.invoke('regenerate-pdf', data),
+  offLastSavePathUpdated: (callback) => ipcRenderer.removeListener('last-save-path-updated', callback),
+  onRegeneratePDF: (callback) => ipcRenderer.on('regenerate-pdf', callback),
+  offRegeneratePDF: (callback) => ipcRenderer.removeListener('regenerate-pdf', callback),
+  onAutosaveUpdated: (callback) => ipcRenderer.on('autosave-updated', (_, value) => callback(value)),
+  offAutosaveUpdated: (callback) => ipcRenderer.removeListener('autosave-updated', callback),
+  onPDFGenerationStarted: (callback) => {
+    ipcRenderer.on('pdf-generation-started', callback);
+  },
+  offPDFGenerationStarted: (callback) => {
+    ipcRenderer.removeListener('pdf-generation-started', callback);
+  },
+  writeToElectronStore: (settings) => ipcRenderer.send('write-to-electron-store', settings),
+});
+
+

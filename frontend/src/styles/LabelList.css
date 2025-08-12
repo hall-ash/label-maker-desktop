@@ -1,0 +1,10 @@
+.label-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.add-label-btn {
+  /* margin-top: 3px; */
+  align-self: flex-end;
+}

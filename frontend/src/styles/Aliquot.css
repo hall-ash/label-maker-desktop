@@ -1,0 +1,23 @@
+.aliquot-text-input {
+  flex-shrink: 3;
+}
+
+.aliquot-number-input {
+  flex-shrink: 2;
+  max-width: 80px;
+}
+
+.trash-icon {
+  font-size: 2rem;
+  color: gray;
+  cursor: pointer;
+  flex-shrink: auto;
+}
+
+.aliquot-input-container {
+	display: flex;
+	column-gap: 1.5rem;
+	/*justify-content: space-around;*/
+	margin-right: 4rem;
+	margin-top: 0.3rem;
+}

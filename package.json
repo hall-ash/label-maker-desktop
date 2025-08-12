@@ -1,0 +1,19 @@
+{
+  "name": "make-labels",
+  "version": "1.0.0",
+  "description": "Label Making App",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"cd frontend && npm start\" \"wait-on http://localhost:3000 && npx electron .\""
+  },
+  "dependencies": {
+    "electron": "^35.0.1",
+    "electron-store": "^10.1.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "wait-on": "^8.0.3"
+  }
+}

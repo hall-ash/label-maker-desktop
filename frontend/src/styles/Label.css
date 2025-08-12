@@ -1,0 +1,59 @@
+.label-container {
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 1px;
+  margin-bottom: 15px;
+  background-color: #f8f9fa;
+  position: relative;
+}
+
+.remove-label-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.label-title, .label-count, .aliquots-title {
+  font-weight: bold;
+  color: #495057;
+}
+
+.label-count-container, .label-count-input {
+  display: flex;
+  align-items: center;
+}
+
+.label-count-input {
+  width: 60px;
+  margin-left: 10px;
+}
+
+.add-aliquot-btn {
+  font-size: 1.5em;
+  color: gray;
+  align-items: flex-end;
+}
+
+.label-count-and-add-aliquots-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.aliquots-container {
+  display: flex;
+}
+
+.aliquots-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1; 
+}
+
+.add-aliquot-btn-column {
+  display: flex;
+  align-items: flex-end;
+  flex: 0 1 auto;
+  margin-bottom: 0.21rem;
+}
