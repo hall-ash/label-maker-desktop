@@ -27,7 +27,7 @@ const SkipLabelsDropdown = ({ skipLabelsValue, onChange, error, onBlur }) => {
 
   return (
     <FormGroup className="mb-3">
-              <RSLabel for="skipLabels" className="form-label">Skip Labels</RSLabel>
+              <RSLabel for="skipLabels" className="skip-labels">Skip Labels</RSLabel>
       <Accordion open={open} toggle={toggle}>
         <AccordionItem>
           <AccordionHeader targetId="1">{open === '1' ? "Add labels to skip below" : "Click here to skip labels"}</AccordionHeader>
