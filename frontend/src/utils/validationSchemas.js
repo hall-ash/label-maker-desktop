@@ -33,38 +33,56 @@ const skipLabelsSchema = z
   );
 
 
-
-const quantitySchema = z.coerce.number({ invalid_type_error: "Quantity must be a number", })
-                       .nonnegative({ message: 'Quantity can\'t be negative' })
-                       .lte(1000, { message: 'Max quantity is 1000' })
-                       .int({ message: 'Quantity must be an integer' });
+const quantitySchema = z.coerce.number({ invalid_type_error: "Quantity must be a number" })
+  .nonnegative({ message: "Quantity can't be negative" })
+  .lte(1000, { message: "Max quantity is 1000" })
+  .int({ message: "Quantity must be an integer" });
 
 const aliquotSchema = z.object({
   aliquottext: z.string(),
-  number: quantitySchema,
+  number: quantitySchema,  // '' -> 0, then normal rules
 });
 
-const labelSchema = z.object({
+/** Branch: NOT using aliquots -> validate labelcount; ignore aliquots */
+const labelWhenCount = z.object({
+  displayAliquots: z.literal(false),
   labeltext: z.string(),
-  labelcount: quantitySchema,
-  displayAliquots: z.boolean(),
-  aliquots: z.array(aliquotSchema),
+  labelcount: quantitySchema,                 // enforce here
+  aliquots: z.any().optional().transform(() => []), // ignored
 });
 
-const labelsSchema = z
+/** Branch: using aliquots -> validate aliquots; ignore labelcount */
+const labelWhenAliquots = z.object({
+  displayAliquots: z.literal(true),
+  labeltext: z.string(),
+  labelcount: z.any().optional().transform(() => 0), // forced 0, never errors
+  aliquots: z.array(aliquotSchema).transform(as => as.filter(a => a.number > 0)),
+});
+
+export const labelSchema = z.discriminatedUnion("displayAliquots", [
+  labelWhenCount,
+  labelWhenAliquots,
+]);
+
+export const labelsSchema = z
   .array(labelSchema)
-  .transform((labels) =>
+  .transform(labels =>
     labels
-      .map(({ labeltext, aliquots, labelcount, displayAliquots }) => ({
-        name: labeltext.trim(),
-        count: displayAliquots ? 0 : labelcount,
+      .map(({ labeltext, displayAliquots, labelcount, aliquots }) => ({
+        name: (labeltext ?? "").trim(),
         use_aliquots: displayAliquots,
-        aliquots: aliquots
+        count: displayAliquots ? 0 : (labelcount ?? 0),
+        aliquots: displayAliquots ? aliquots
           .filter(aliquot => aliquot.number) 
-          .map(({ aliquottext, number }) => ({ text: aliquottext, number })), 
-      })).filter(label => (label.count > 0 && label.name) || (label.name && label.aliquots.length > 0))
+          .map(({ aliquottext, number }) => ({ text: aliquottext, number })) 
+           : [],
+      }))
+      .filter(l =>
+        l.name && (l.count > 0 || (l.use_aliquots && l.aliquots.length > 0))
+      )
   )
-  .refine(labels => labels.length > 0, { message: "No labels to print" });
+  .refine(arr => arr.length > 0, { message: "No labels to print" });
+
 
 
 const settingsSchema = z.object({
