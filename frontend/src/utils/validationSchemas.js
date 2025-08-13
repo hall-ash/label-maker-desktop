@@ -28,15 +28,11 @@ const skipLabelsSchema = z
       return pattern.test(skips);
     },
     {
-      message: "Format => Page#: Labels to skip", // Error message shown when regex fails
+      message: "Format => Page#: Labels to skip (See About Page)", 
     }
   );
 
-const numberInputSchema = z.string()
-  .transform(value => parseFloat(value)) // Transform string input to a float
-  .refine(number => !isNaN(number) && isFinite(number), { message: 'Enter a number' }); 
 
-const nonnegativeNumberInputSchema = numberInputSchema.refine(number => number >= 0, { message: 'Enter a number greater than or equal to 0' });
 
 const quantitySchema = z.coerce.number({ invalid_type_error: "Quantity must be a number", })
                        .nonnegative({ message: 'Quantity can\'t be negative' })
@@ -87,28 +83,25 @@ const settingsSchema = z.object({
 });
 
 
-
-// expected array, received string
 const amountsSchema = z
-  .string() // Input is expected to be a string
+  .string() 
   .transform(amountsStr => {
     const amounts = amountsStr.match(/\d+(\.\d+)?/g); // Extract numbers from the string
-    return amounts ? amounts.map(Number) : []; // Convert to an array of numbers
+    return amounts ? amounts.map(Number) : []; 
   })
   .refine(amounts => amounts.length > 0, { message: 'Provide at least one amount' });
- // The transformed value should be an array of numbers
 
 
 const calculateAliquotsModalSchema = z.object({
   'concentration': z.string()
-  .min(1, { message: "Enter a concentration" })  // Ensure it's not an empty string
-  .transform((val) => val.trim())         // Optionally, trim whitespace
+  .min(1, { message: "Enter a concentration" })  
+  .transform((val) => val.trim())         
   .pipe(z.coerce.number({
     invalid_type_error: "Concentration must be a number",
   }).positive({ message: 'Concentration must be greater than 0' })),
   'volume': z.string()
-  .min(1, { message: "Enter a volume" })  // Ensure it's not an empty string
-  .transform((val) => val.trim())         // Optionally, trim whitespace
+  .min(1, { message: "Enter a volume" })  
+  .transform((val) => val.trim())         
   .pipe(z.coerce.number({
     invalid_type_error: "Volume must be a number",
   }).positive({ message: 'Volume must be greater than 0' })),
@@ -122,35 +115,8 @@ const labelFormSchema = z.object({
   skipLabels: z.optional(skipLabelsSchema), 
 });
 
-const getLabelListErrors = (issues) => {
-  
-  return issues
-    .filter(({ path }) => path[0] === 'labels' && path.length > 1)
-    .reduce((labelListErrors, { path, message }) => {
-      const labelIndex = path[1];
-      const subError = {
-        'path': path.slice(1),
-        message,
-      };
-      return labelListErrors[labelIndex] ? labelListErrors[labelIndex].push(subError) : (labelListErrors[labelIndex] = [subError]);
-      
-    }, []);
-};
 
-
-const getErrors = parsedDataError => {
-   // Check if there are any issues and reduce them to an object with error messages
-  return parsedDataError?.issues?.reduce((msgs, issue) => {
-    const { path: inputs, message } = issue; // Destructure path and message from the issue
-    if (inputs.length > 0) { // Ensure path has at least one element
-      msgs[inputs[0]] = message; // Map the first path element to the error message
-    }
-    return msgs;
-  }, {}) || {}; // Return empty object if no errors
-};
-
-
-export { labelsSchema, skipLabelsSchema, startLabelSchema, getLabelListErrors, quantitySchema, settingsSchema, labelFormSchema, calculateAliquotsModalSchema, labelSchema, nonnegativeNumberInputSchema, aliquotSchema, getErrors };
+export { skipLabelsSchema, startLabelSchema, quantitySchema, settingsSchema, labelFormSchema, calculateAliquotsModalSchema };
 
 
 

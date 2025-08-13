@@ -1,6 +1,5 @@
 const calculateAliquots = (concentration, volume, amounts, aliquotMassUnit="mg") => {
 
-
     amounts.sort((a, b) => a - b);
     const totalMass = concentration * volume;
     const totalSum = amounts.reduce((a, b) => a + b, 0);
@@ -10,7 +9,6 @@ const calculateAliquots = (concentration, volume, amounts, aliquotMassUnit="mg")
     const aliquots = [];
     const frequency = Array(amounts.length).fill(factor);
 
-    // loop through the array in reverse (favors larger )
     let i = amounts.length - 1;
     while (remaining_mgs >= amounts[0]) {
       
@@ -22,7 +20,6 @@ const calculateAliquots = (concentration, volume, amounts, aliquotMassUnit="mg")
       i = (i - 1 + amounts.length) % amounts.length;
   
     }
-
 
     const doRounding = (num) => num > 1 ? Math.round(num * 10) / 10 : Math.round(num * 1000) / 1000;
     const doFormatting = (num) => num > 1 ? num.toFixed(1) : (num * 1000).toFixed(0);
