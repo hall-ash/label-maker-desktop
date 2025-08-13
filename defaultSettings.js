@@ -3,7 +3,7 @@ import os from 'os';
 
 const defaultSettings = {
   autosaveEnabled: false,
-  lastSavePath: path.join(os.homedir(), 'Downloads', 'labels.pdf'), // save to downloads folder on user's computer
+  lastSavePath: path.join(os.homedir(), 'Downloads', 'labels.pdf'), 
   labelSettings: {
     hasBorder: false,
     fontSize: 12,
