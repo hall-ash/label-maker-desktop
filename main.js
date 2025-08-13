@@ -135,12 +135,12 @@ const createWindow = () => {
             }
             store.set('lastSavePath', filePath.endsWith('.pdf') ? filePath : filePath + '.pdf');
 
-            win.webContents.send('regenerate-pdf');
+            win.webContents.send('regenerate-pdf-trigger');
 
           }
         },
         {
-          label: 'Autosave',
+          label: 'Remember last save location', // previously named autosave
           type: 'checkbox',
           checked: store.get('autosaveEnabled', false),
           click: (menuItem) => {
@@ -191,39 +191,9 @@ const createWindow = () => {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 
-  // ipcMain.handle('generate-pdf', async (event, formData) => {
-  //   return new Promise((resolve, reject) => {
-  //     const pythonPath = path.join(__dirname, 'backend', '.venv', 'Scripts', 'python.exe');
-  //     const pythonProcess = spawn(pythonPath, [
-  //       path.join(__dirname, 'backend', 'src', 'generate_pdf.py'),
-  //       JSON.stringify(formData)
-  //     ]);
-  
-  //     let result = '';
-  //     let error = '';
-  
-  //     pythonProcess.stdout.on('data', (data) => {
-  //       result += data.toString();
-  //     });
-  
-  //     pythonProcess.stderr.on('data', (data) => {
-  //       error += data.toString();
-  //       console.error(`stderr: ${error}`);
-  //     });
-  
-  //     pythonProcess.on('close', (code) => {
-  //       if (code === 0 && result.startsWith('success')) {
-  //         resolve({ status: 'success' });
-  //       } else {
-  //         resolve({ status: 'error', message: error.trim() || result });
-  //       }
-  //     });
-  //   });
-  // });
-
   ipcMain.handle('generate-pdf', async (event, formData) => await generatePDF(formData));
 
-  ipcMain.handle('regenerate-pdf', async (event, formData) => await regeneratePDF(formData));
+  ipcMain.handle('regenerate-pdf-invoke', async (event, formData) => await regeneratePDF(formData));
 
   ipcMain.handle('get-label-settings', () => {
     return store.get('labelSettings');
@@ -243,10 +213,6 @@ const createWindow = () => {
 
   ipcMain.handle('set-last-save-path', (_event, newSavePath) => {
     store.set('lastSavePath', newSavePath);
-  });
-
-  ipcMain.handle('open-file-dialog', async () => {
-    return await showSavePDFDialog();
   });
 
   ipcMain.on('write-to-electron-store', (event, settings) => {
