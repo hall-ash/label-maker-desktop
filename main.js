@@ -128,8 +128,6 @@ const createWindow = () => {
               filters: [ { name: 'PDF Files', extensions: ['pdf'] }],
             });
 
-            console.log('file dialog opened')
-
             if (canceled || !filePath) {
               return null;
             }
