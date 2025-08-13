@@ -5,15 +5,33 @@ import CalculateAliquotsModal from './CalculateAliquotsModal';
 import { Row, Col, FormFeedback, Label as RSLabel, FormGroup, Input, Container, Button } from 'reactstrap';
 import { FaPlusSquare, FaTimes } from 'react-icons/fa';
 import { quantitySchema } from '../utils/validationSchemas';
+import { makeAliquot } from '../utils/formUtils'; // creates a fresh aliquot object with id, text, number
 
+const Label = ({
+  id,
+  labeltext,
+  labelCount,
+  aliquots,
+  removeLabel,
+  addAliquot,
+  removeAliquot,
+  onChange,
+  setAliquots,
+  displayAliquots
+}) => {
+  const [errors, setErrors] = useState({
+    labelCount: '',
+  });
 
-const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, removeAliquot, onChange, setAliquots, displayAliquots }) => {
+  const emitChange = (name, value, extra = {}) =>
+    onChange({ target: { name, value, ...extra } }, id);
+
   const aliquotComponents = aliquots.map(({ id: aliquotId, aliquottext, number }) => (
     <Aliquot
       id={aliquotId}
       key={aliquotId}
-      aliquottext={aliquottext}
-      number={number}
+      aliquottext={aliquottext ?? ""}
+      number={number ?? ""}
       remove={() => removeAliquot(id, aliquotId)}
       onChange={(e) => onChange(e, id, aliquotId)}
     />
@@ -22,22 +40,28 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
   const handleClick = () => addAliquot(id);
   const handleCalculateAliquotsClick = (aliquots) => setAliquots(id, aliquots);
   const handleRemoveLabel = () => removeLabel(id);
-  const toggleShowAliquots = () => {
-    handleChange({ target: { name: "displayAliquots", checked: !displayAliquots, value: !displayAliquots } });
-  };
 
-  const [errors, setErrors] = useState({
-    labelCount: '',
-  });
+  const toggleShowAliquots = () => {
+    const next = !displayAliquots;
+    emitChange("displayAliquots", next, { checked: next });
+
+    if (next) {
+      // Turning ON aliquots: set label count to 1
+      emitChange("labelcount", "1");
+      setErrors(prev => ({ ...prev, labelCount: "" }));
+    } else {
+      // Turning OFF aliquots: reset to one blank aliquot row with number 1
+      const newAliquot = { ...makeAliquot(), number: "1" };
+      setAliquots(id, [newAliquot]);
+    }
+  };
 
   const handleChange = e => {
     const { name, value } = e.target;
-
     onChange(e, id);
 
     if (name === "labelcount") {
       const parsedLabelCount = quantitySchema.safeParse(value);
-
       if (!parsedLabelCount.success) {
         const errorMsg = parsedLabelCount.error.errors[0].message;
         setErrors(prev => ({ ...prev, labelCount: errorMsg }));
@@ -45,7 +69,6 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
         setErrors(prev => ({ ...prev, labelCount: "" }));
       }
     }
-
   };
 
   return (
@@ -53,6 +76,7 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
       <div className="remove-label-icon">
         <FaTimes onClick={handleRemoveLabel} />
       </div>
+
       <Row className="mt-1">
         <FormGroup className="w-100">
           <RSLabel for="labeltext" className="label-title">Label Text</RSLabel>
@@ -66,25 +90,26 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
           />
         </FormGroup>
       </Row>
+
       <Row className="mt-1 label-count-and-add-aliquots-container">
         {!displayAliquots && (
           <Col xs="4">
             <FormGroup className="label-count-container">
               <RSLabel className="label-count" for="labelcount">Label Count</RSLabel>
               <div className="label-count-field">
-              <Input
-                id="labelcount"
-                name="labelcount"
-                type="text"
-                value={labelCount}
-                onChange={handleChange}
-                bsSize='sm'
-                className="label-count-input"
-                invalid={Boolean(errors.labelCount)}
-              />
-               <FormFeedback>
-                {errors.labelCount}
-              </FormFeedback>
+                <Input
+                  id="labelcount"
+                  name="labelcount"
+                  type="text"
+                  value={labelCount ?? ""}
+                  onChange={handleChange}
+                  bsSize='sm'
+                  className="label-count-input"
+                  invalid={Boolean(errors.labelCount)}
+                />
+                <FormFeedback>
+                  {errors.labelCount}
+                </FormFeedback>
               </div>
             </FormGroup>
           </Col>
@@ -95,6 +120,7 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
           </Button>
         </Col>
       </Row>
+
       {displayAliquots && (
         <div>
           <Row className="mt-3 align-items-center">
@@ -110,13 +136,17 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
               {aliquotComponents}
             </div>
             <div className="add-aliquot-btn-column">
-              <FaPlusSquare className="add-aliquot-btn" onClick={handleClick} style={{ cursor: 'pointer' }} />
+              <FaPlusSquare
+                className="add-aliquot-btn"
+                onClick={handleClick}
+                style={{ cursor: 'pointer' }}
+              />
             </div>
           </div>
         </div>
       )}
     </Container>
   );
-}
+};
 
 export default Label;
