@@ -5,6 +5,6 @@
 }
 
 .add-label-btn {
-  /* margin-top: 3px; */
   align-self: flex-end;
+  margin-right: 13px;
 }

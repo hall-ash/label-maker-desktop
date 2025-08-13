@@ -3,17 +3,23 @@
   padding-bottom: 20px;
 } 
 
-.form-label {
+.start-on-label, .skip-labels {
   font-weight: bold;
   color: #495057;
+  margin-left: 10px;
 }
 
-.form-input, .form-textarea, .form-file {
+.start-label-row {
+  height: 5em;
+}
+
+.start-label-input {
+  margin-top: 10px;
+  max-width: 60px;
+}
+
+.form-textarea {
   width: 100%;
-}
-
-.form-input-narrow {
-  width: 10em;
 }
 
 .form-check-group {
@@ -43,7 +49,4 @@
  
 }
 
-.start-label-row {
-  height: 5em;
-}
 

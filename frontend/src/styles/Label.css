@@ -1,7 +1,7 @@
 .label-container {
   border: 1px solid #dee2e6;
   border-radius: 5px;
-  padding: 1px;
+  padding: 10px;
   margin-bottom: 15px;
   background-color: #f8f9fa;
   position: relative;
@@ -14,19 +14,35 @@
   cursor: pointer;
 }
 
-.label-title, .label-count, .aliquots-title {
+.label-title {
   font-weight: bold;
   color: #495057;
+  white-space: nowrap;
+  font-size: 1rem;
+  margin-top: 8px;
 }
 
-.label-count-container, .label-count-input {
+.label-count, .aliquots-title {
+  font-weight: bold;
+  color: #495057;
+  white-space: nowrap;
+  font-size: 1rem;
+}
+
+.label-count-container {
   display: flex;
-  align-items: center;
+  min-width: 400px;
+}
+
+.label-count {
+  margin-top: 5px;
 }
 
 .label-count-input {
-  width: 60px;
+  max-width: 85px;
+  max-height: 20px;
   margin-left: 10px;
+  margin-right: 10px;
 }
 
 .add-aliquot-btn {
