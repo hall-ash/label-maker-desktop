@@ -28,7 +28,7 @@ const LabelList = ({ labels, addLabel, removeLabel, addAliquot, removeAliquot, o
   return (
     <div className="label-list-container">
       {labelComponents}
-      <Button className="add-label-btn" outline color="primary" size="sm" type="button" onClick={addLabel}>Add Label</Button>
+      <Button className="add-label-btn" outline color="primary" type="button" onClick={addLabel}>Add Label</Button>
     </div>
   );
 
