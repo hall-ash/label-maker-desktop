@@ -25,30 +25,9 @@
   margin-right: 30px;
 }
 
-
 .number-field {
   position: relative;
   display: inline-block;
-}
-
-.number-field .invalid-feedback {
-  display: none;               /* hidden unless input is invalid */
-  position: absolute;
-  top: calc(100% + 4px);       /* just below the input */
-  left: 0;
-  background: #f8d7da;         /* Bootstrap danger background */
-  color: red;              /* Bootstrap danger text */
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  z-index: 10;
-  box-shadow: 0 2px 4px rgba(0,0,0,.15);
-  pointer-events: none;        /* don’t capture hover */
-}
-
-/* show tooltip when input is invalid */
-.number-field .is-invalid ~ .invalid-feedback {
-  display: block;
 }
 
 /* optional arrow */

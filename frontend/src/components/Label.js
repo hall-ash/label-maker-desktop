@@ -71,6 +71,7 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
           <Col xs="4">
             <FormGroup className="label-count-container">
               <RSLabel className="label-count" for="labelcount">Label Count</RSLabel>
+              <div className="label-count-field">
               <Input
                 id="labelcount"
                 name="labelcount"
@@ -84,6 +85,7 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
                <FormFeedback>
                 {errors.labelCount}
               </FormFeedback>
+              </div>
             </FormGroup>
           </Col>
         )}

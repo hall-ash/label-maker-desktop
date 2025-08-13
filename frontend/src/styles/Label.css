@@ -31,7 +31,9 @@
 
 .label-count-container {
   display: flex;
-  min-width: 400px;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
 }
 
 .label-count {
@@ -39,10 +41,11 @@
 }
 
 .label-count-input {
-  max-width: 85px;
+  flex: 0 0 90px;
   max-height: 20px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .add-aliquot-btn {
@@ -52,8 +55,6 @@
 }
 
 .label-count-and-add-aliquots-container {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -72,4 +73,96 @@
   align-items: flex-end;
   flex: 0 1 auto;
   margin-bottom: 0.21rem;
+}
+
+/* Tooltip arrow */
+.label-count-container .invalid-feedback::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #f8d7da transparent;
+}
+
+/* Tooltip box */
+.label-count-container .invalid-feedback {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: #f8d7da;
+  color: #842029;
+  padding: 6px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
+  z-index: 10;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 280px; 
+  white-space: normal; 
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Show tooltip when invalid */
+.label-count-container .is-invalid ~ .invalid-feedback {
+  display: inline-block;
+}
+
+/* Keep your existing flex row */
+.label-count-container {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+/* NEW: a local anchor for the tooltip */
+.label-count-field {
+  position: relative;      /* <-- makes the tooltip position under the input */
+  flex: 0 0 90px;   /* keeps width to the input */
+}
+
+/* Keep your input styles */
+.label-count-input {
+  width: 100%;
+  max-height: 20px;
+}
+
+/* Tooltip box anchored to .label-count-field (right under the input) */
+.label-count-field .invalid-feedback {
+  display: none;              /* hidden by default, shown via sibling rule */
+  position: absolute;
+  top: calc(100% + 4px);      /* slightly tighter than +6px */
+  left: 0;
+  background: #f8d7da;
+  color: #842029;
+  padding: 6px 8px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.15);
+  z-index: 10;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: 280px;
+  white-space: normal;
+  line-height: 1.2;
+  margin: 0;                  /* override BS default */
+}
+
+/* Arrow attached to the tooltip */
+.label-count-field .invalid-feedback::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 10px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #f8d7da transparent;
+}
+
+/* Show tooltip when the input is invalid (sibling in the wrapper) */
+.label-count-field .is-invalid ~ .invalid-feedback {
+  display: inline-block;
 }
