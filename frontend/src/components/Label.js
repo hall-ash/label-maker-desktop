@@ -5,7 +5,7 @@ import CalculateAliquotsModal from './CalculateAliquotsModal';
 import { Row, Col, FormFeedback, Label as RSLabel, FormGroup, Input, Container, Button } from 'reactstrap';
 import { FaPlusSquare, FaTimes } from 'react-icons/fa';
 import { quantitySchema } from '../utils/validationSchemas';
-import { makeAliquot } from '../utils/formUtils'; // creates a fresh aliquot object with id, text, number
+import { makeAliquot } from '../utils/formUtils'; 
 
 const Label = ({
   id,
