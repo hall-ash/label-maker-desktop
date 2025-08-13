@@ -38,24 +38,23 @@ const Aliquot = ({ aliquottext, number, remove, onChange }) => {
             className="aliquot-text-input"
           />
         </InputGroup>
-        <InputGroup>
-          <Input
-            id="number"
-            name="number"
-            type="text"
-            placeholder="number"
-            value={number}
-            bsSize="sm"
-            className="aliquot-number-input"
-            onChange={handleChange}
-            invalid={Boolean(errors.number)}
-          />
-          <FormFeedback>
-            {errors.number}
-          </FormFeedback>
-        </InputGroup>
-
-        <FaTrash onClick={remove} className="trash-icon" />
+        <div className="number-and-trash">
+  <div className="number-field">
+    <Input
+      id="number"
+      name="number"
+      type="text"
+      placeholder="number"
+      value={number}
+      bsSize="sm"
+      className="aliquot-number-input"
+      onChange={handleChange}
+      invalid={Boolean(errors.number)}
+    />
+    <FormFeedback>{errors.number}</FormFeedback>
+  </div>
+  <FaTrash onClick={remove} className="trash-icon" />
+</div>
      
     </div>
   );
