@@ -1,9 +1,9 @@
 from label_maker import LabelMaker
 from label import LabelList
 from label_utils import get_skips_dict
-import logging
 import json
 import os
+import sys
 
 def generate_pdf(formData):
     
@@ -43,22 +43,15 @@ def generate_pdf(formData):
 
 
 if __name__ == "__main__":
-    import sys
-    import json
-    import os
-    import logging
 
     try:
         formData = sys.argv[1]
         result = generate_pdf(formData)
 
         if result == 'success':
-            print('success')  # stdout for Electron to detect
+            print('success')  
             sys.exit(0)
-        # else:
-        #     print(result, file=sys.stderr)  # send errors to stderr
-        #     sys.exit(1)
-
+     
     except PermissionError:
         print(f"The file is currently open. Please close it and try again.", file=sys.stderr)
         sys.exit(1)

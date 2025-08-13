@@ -6,7 +6,6 @@ from sheet_types import sheet_types
 import os
 
 
-MU = "µ"
 
 class LabelMaker:
     '''
