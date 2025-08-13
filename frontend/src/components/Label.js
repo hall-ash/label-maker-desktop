@@ -5,7 +5,6 @@ import CalculateAliquotsModal from './CalculateAliquotsModal';
 import { Row, Col, FormFeedback, Label as RSLabel, FormGroup, Input, Container, Button } from 'reactstrap';
 import { FaPlusSquare, FaTimes } from 'react-icons/fa';
 import { quantitySchema } from '../utils/validationSchemas';
-import '../styles/Label.css';
 
 
 const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, removeAliquot, onChange, setAliquots, displayAliquots }) => {
@@ -20,7 +19,6 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
     />
   ));
 
-  //const handleChange = e => onChange(e, id);
   const handleClick = () => addAliquot(id);
   const handleCalculateAliquotsClick = (aliquots) => setAliquots(id, aliquots);
   const handleRemoveLabel = () => removeLabel(id);
@@ -35,10 +33,8 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
   const handleChange = e => {
     const { name, value } = e.target;
 
-    // Call the parent onChange to update the state in the parent
     onChange(e, id);
 
-    // Validate the labelCount field
     if (name === "labelcount") {
       const parsedLabelCount = quantitySchema.safeParse(value);
 
@@ -81,7 +77,7 @@ const Label = ({ id, labeltext, labelCount, aliquots, removeLabel, addAliquot, r
                 type="text"
                 value={labelCount}
                 onChange={handleChange}
-                bsSize="sm"
+                bsSize='sm'
                 className="label-count-input"
                 invalid={Boolean(errors.labelCount)}
               />
