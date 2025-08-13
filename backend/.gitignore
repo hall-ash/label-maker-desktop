@@ -5,7 +5,7 @@ __pycache__/
 *.pyd
 
 # Virtual environment
-.label_venv/
+.venv/
 
 # Environment variables & secrets
 .env
