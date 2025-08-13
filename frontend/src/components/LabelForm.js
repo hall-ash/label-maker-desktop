@@ -11,6 +11,12 @@ import { useAppSettings } from '../context/AppSettingsContext';
 
 const LabelForm = () => {
   const { labelSettings } = useAppSettings();
+
+  const labelSettingsRef = useRef(labelSettings);
+  useEffect(() => {
+    labelSettingsRef.current = labelSettings;
+  }, [labelSettings]);
+
   const { 
     generatePDF, 
     regeneratePDF, 
@@ -210,14 +216,15 @@ const LabelForm = () => {
       }
 
       const { labels, startLabel, skipLabels } = parsedData.data;
+      const ls = labelSettingsRef.current; 
       const validatedFormData = {
         labels,
         start_label: startLabel,
         skip_labels: skipLabels,
-        border: labelSettings.hasBorder,
-        padding: labelSettings.padding,
-        font_size: labelSettings.fontSize,
-        text_anchor: labelSettings.textAnchor,
+        border: ls.hasBorder,
+        padding: ls.padding,
+        font_size: ls.fontSize,
+        text_anchor: ls.textAnchor,
       };
 
       setWaitingForApi(true);
@@ -246,8 +253,8 @@ const LabelForm = () => {
     <div className="label-form-container">
       <Form onSubmit={handleSubmit}>
         <Row className="start-label-row">
-          <Col className="mt-3">
-            <RSLabel for="startLabel" className="form-label">Start On Label:</RSLabel>
+          <Col className="mt-3" xs="auto">
+            <RSLabel for="startLabel" className="start-on-label">Start On Label:</RSLabel>
           </Col>
           <Col>
             <Input
@@ -256,7 +263,8 @@ const LabelForm = () => {
               type="text"
               value={formData.startLabel}
               onChange={handleChange}
-              className="form-input-narrow"
+              className="start-label-input"
+              bsSize='sm'
               invalid={!!errors.startLabel}
               onBlur={handleBlur}
             />
