@@ -59,7 +59,10 @@ const SettingsModal = ({ isOpen, toggle }) => {
             control={control}
             name="textAnchor"
             render={({ field }) => (
-              <Input type="select" id="textAnchor" {...field}>
+              <Input 
+                type="select" 
+                id="textAnchor" {...field}
+              >
                 <option value="middle">Middle</option>
                 <option value="start">Start</option>
                 <option value="end">End</option>
@@ -67,7 +70,7 @@ const SettingsModal = ({ isOpen, toggle }) => {
             )}
           />
         </FormGroup>
-        <FormGroup check className="d-flex align-items-center">
+        <FormGroup check className="d-flex">
           <Controller
             control={control}
             name="hasBorder"
@@ -83,7 +86,7 @@ const SettingsModal = ({ isOpen, toggle }) => {
           <RSLabel for="border" className="ms-2">Add Border</RSLabel>
         </FormGroup>
       </ModalBody>
-      <ModalFooter className="justify-content-end">
+      <ModalFooter className="justify-content-center">
         <Button color="secondary" onClick={handleCancel}>Cancel</Button>
         <Button color="primary" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>Save</Button>
       </ModalFooter>
