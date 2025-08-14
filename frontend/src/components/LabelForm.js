@@ -27,6 +27,47 @@ const LabelForm = () => {
   } = window.electron;
 
   const [waitingForApi, setWaitingForApi] = useState(false);
+
+  const pendingRef = useRef(false);
+  const delayTimerRef = useRef(null);
+  const hardTimeoutRef = useRef(null);
+
+  // call this when you begin an async op
+  const startSpinnerWithDelay = (delayMs = 400, hardTimeoutMs = 30000) => {
+    // mark pending immediately
+    pendingRef.current = true;
+
+    // show spinner only if still pending after delay
+    delayTimerRef.current = setTimeout(() => {
+      if (pendingRef.current) {
+        setWaitingForApi(true);
+      }
+    }, delayMs);
+
+    // optional hard timeout: stop spinner & show error if something hangs
+    hardTimeoutRef.current = setTimeout(() => {
+      if (pendingRef.current) {
+        pendingRef.current = false;
+        setWaitingForApi(false);
+        showError('PDF creation is taking longer than expected. Please try again.');
+      }
+    }, hardTimeoutMs);
+  };
+
+  const stopSpinner = () => {
+    pendingRef.current = false;
+    if (delayTimerRef.current) clearTimeout(delayTimerRef.current);
+    if (hardTimeoutRef.current) clearTimeout(hardTimeoutRef.current);
+    setWaitingForApi(false);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (delayTimerRef.current) clearTimeout(delayTimerRef.current);
+      if (hardTimeoutRef.current) clearTimeout(hardTimeoutRef.current);
+    };
+  }, []);
+
   const [errors, setErrors] = useState({
     startLabel: '',
     skipLabels: '',
@@ -189,6 +230,8 @@ const LabelForm = () => {
       text_anchor: labelSettings.textAnchor,
     };
 
+    startSpinnerWithDelay(400);
+
     try {
       const response = await generatePDF(validatedFormData);
       if (!['success', 'canceled'].includes(response.status)) {
@@ -198,7 +241,7 @@ const LabelForm = () => {
       console.error('Unexpected error submitting form:', error);
       showError('An unexpected error occurred while creating the PDF.');
     } finally {
-      setWaitingForApi(false);
+      stopSpinner();
     }
   };
 
@@ -227,7 +270,7 @@ const LabelForm = () => {
         text_anchor: ls.textAnchor,
       };
 
-      setWaitingForApi(true);
+      startSpinnerWithDelay(400);
 
       try {
         const response = await regeneratePDF(validatedFormData);
@@ -238,7 +281,7 @@ const LabelForm = () => {
         console.error('Unexpected error submitting form:', error);
         showError('An unexpected error occurred while creating the PDF.');
       } finally {
-        setWaitingForApi(false);
+        stopSpinner();
       }
     };
     onRegeneratePDF(handleRegenerate);
