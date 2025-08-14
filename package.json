@@ -4,6 +4,8 @@
   "description": "Label Making App",
   "main": "main.js",
   "type": "module",
+  "author": "label maker author",
+  "homepage": "./",
   "build": {
     "appId": "com.me.labelmaker",
     "productName": "LabelMaker",
@@ -11,14 +13,20 @@
       "main.js",
       "preload.js",
       "backend/**",
-      "frontend/build/**"
+      "frontend/build/**",
+      "defaultSettings.js"
     ],
     "extraResources": [
       { "from": "dist_worker", "to": "worker", "filter": ["**/*"] }
     ],
     "asar": true,
     "mac": { "target": ["dmg", "zip"], "category": "public.app-category.productivity" },
-    "win": { "target": ["nsis", "zip"], "sign": false },
+    "win": {
+  "target": ["nsis", "zip"],
+  "signAndEditExecutable": false,
+  "verifyUpdateCodeSignature": false,
+  "icon": "assets/icons/favicon(1).ico"
+},
     "linux": { "target": ["AppImage", "deb"] }
   },
    "scripts": {
