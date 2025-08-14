@@ -2,7 +2,7 @@ import { Container } from 'reactstrap';
 
 const AboutPage = () => {
   return (
-    <Container className="col-md-7 mt-5">
+    <Container className="col-md-10 mt-5 mb-5">
       <h2 className="mb-4">About</h2>
       
       <p>

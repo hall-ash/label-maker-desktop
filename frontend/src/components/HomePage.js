@@ -5,7 +5,7 @@ import '../styles/HomePage.css';
 const HomePage = () => {
 
   return (
-    <Container className='col-md-7'>
+    <Container className='col-md-10'>
       <LabelForm />
     </Container>
   );

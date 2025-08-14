@@ -1,12 +1,32 @@
 {
-  "name": "make-labels",
+  "name": "label-maker",
   "version": "1.0.0",
   "description": "Label Making App",
   "main": "main.js",
   "type": "module",
-  "scripts": {
-    "start": "electron .",
-    "dev": "concurrently \"cd frontend && npm start\" \"wait-on http://localhost:3000 && npx electron .\""
+  "build": {
+    "appId": "com.me.labelmaker",
+    "productName": "LabelMaker",
+    "files": [
+      "main.js",
+      "preload.js",
+      "backend/**",
+      "frontend/build/**"
+    ],
+    "extraResources": [
+      { "from": "dist_worker", "to": "worker", "filter": ["**/*"] }
+    ],
+    "asar": true,
+    "mac": { "target": ["dmg", "zip"], "category": "public.app-category.productivity" },
+    "win": { "target": ["nsis", "zip"] },
+    "linux": { "target": ["AppImage", "deb"] }
+  },
+   "scripts": {
+    "react:start": "cross-env BROWSER=none PORT=3000 npm --prefix frontend start",
+    "electron:dev": "wait-on tcp:3000 && cross-env NODE_ENV=development ELECTRON_START_URL=http://localhost:3000 electron .",
+    "dev": "concurrently -k -r \"npm:react:start\" \"npm:electron:dev\"",
+    "start": "cross-env NODE_ENV=production electron .",
+    "build:ui": "npm --prefix frontend run build"
   },
   "dependencies": {
     "electron-store": "^10.1.0"

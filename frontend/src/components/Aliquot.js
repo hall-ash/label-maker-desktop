@@ -25,7 +25,7 @@ const Aliquot = ({ aliquottext, number, remove, onChange }) => {
   };
 
   return (
-    <div className="aliquot-input-container">
+    <div className="aliquot-input-container col-md-10">
         <InputGroup>
           <Input
             id="aliquottext"
