@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Menu, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, dialog, shell } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { spawn } from 'child_process';
@@ -88,7 +88,11 @@ const generatePDF = async (formData) => {
   if (win) win.webContents.send('pdf-generation-started');
 
   // Merge save_path into payload passed to the worker
-  return runWorker({ ...formData, save_path: savePath });
+  const result = await runWorker({ ...formData, save_path: savePath });
+  if (result.status === 'success') {
+    void shell.openPath(savePath);
+  }
+  return result;
 }
 
 /**
@@ -100,7 +104,12 @@ const regeneratePDF = async (formData) => {
     // Fallback to normal flow if we somehow don’t have one
     return generatePDF(formData);
   }
-  return runWorker({ ...formData, save_path: savePath });
+  
+  const result = await runWorker({ ...formData, save_path: savePath });
+  if (result.status === 'success') {
+    void shell.openPath(savePath);
+  }
+  return result;
 }
 
 const createWindow = () => {
