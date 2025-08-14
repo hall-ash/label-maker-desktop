@@ -3,3 +3,4 @@ electron/dist/
 dist/
 build/
 out/
+.venv/
