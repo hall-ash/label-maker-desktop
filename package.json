@@ -19,6 +19,9 @@
     "extraResources": [
       { "from": "dist_worker", "to": "worker", "filter": ["**/*"] }
     ],
+    "nsis": {
+      "deleteAppDataOnUninstall": true
+    },
     "asar": true,
     "mac": { "target": ["dmg", "zip"], "category": "public.app-category.productivity" },
     "win": {
