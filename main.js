@@ -1,4 +1,3 @@
-// main.js (ESM)
 import { app, BrowserWindow, ipcMain, Menu, dialog } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -119,7 +118,7 @@ const createWindow = () => {
 
   if (isDev) {
     mainWindow.loadURL(process.env.ELECTRON_START_URL || "http://localhost:3000");
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
+    mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
     mainWindow.removeMenu();
@@ -168,13 +167,6 @@ const createWindow = () => {
       ],
     },
     {
-      label: 'Home',
-      click: () => {
-        const win = BrowserWindow.getFocusedWindow();
-        if (win) win.webContents.send('navigate-to-home');
-      },
-    },
-    {
       label: 'Label Settings',
       click: () => {
         const win = BrowserWindow.getFocusedWindow();
@@ -185,7 +177,7 @@ const createWindow = () => {
       label: 'About',
       click: () => {
         const win = BrowserWindow.getFocusedWindow();
-        if (win) win.webContents.send('navigate-to-about');
+        if (win) win.webContents.send('open-about-modal');
       },
     },
   ];

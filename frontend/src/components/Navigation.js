@@ -1,34 +1,36 @@
 import { useState, useEffect } from 'react';
 import "../styles/Navigation.css";
-import { useNavigate } from 'react-router-dom';
 import SettingsModal from "./SettingsModal.js";
+import AboutModal from "./AboutModal.js";
 
 
 const  Navigation = () => {
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
 
   const toggleSettingsModal = () => setIsSettingsModalOpen(!isSettingsModalOpen);
+  const toggleAboutModal = () => setIsAboutModalOpen(!isAboutModalOpen);
 
   const {
     onOpenSettings,
-    onNavigateToAbout,
-    onNavigateToHome,
+    onOpenAbout,
   } = window.electron;
 
-  const navigate = useNavigate();
 
   useEffect(() => {
   
+
     onOpenSettings(toggleSettingsModal);
-    onNavigateToAbout(() => navigate('/about'));
-    onNavigateToHome(() => navigate('/'));
-  
-  }, [navigate]);
+    onOpenAbout(toggleAboutModal);
+
+ 
+  }, []);
 
   return (
     <div>
       <SettingsModal isOpen={isSettingsModalOpen} toggle={toggleSettingsModal}/>
+      <AboutModal isOpen={isAboutModalOpen} toggle={toggleAboutModal} />
     </div>
   );
 }

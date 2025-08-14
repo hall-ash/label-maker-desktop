@@ -2,8 +2,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
   onOpenSettings: (callback) => ipcRenderer.on('open-settings-modal', callback),
-  onNavigateToAbout: (callback) => ipcRenderer.on('navigate-to-about', callback),
-  onNavigateToHome: (callback) => ipcRenderer.on('navigate-to-home', callback),
+  onOpenAbout: (callback) => ipcRenderer.on('open-about-modal', callback),
   getLabelSettings: () => ipcRenderer.invoke('get-label-settings'),
   setLabelSettings: (settings) => ipcRenderer.invoke('set-label-settings', settings),
   isAutosaveEnabled: () => ipcRenderer.invoke('get-autosave-enabled'),
