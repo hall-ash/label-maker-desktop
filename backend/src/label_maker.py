@@ -4,8 +4,12 @@ from reportlab.pdfbase.pdfmetrics import stringWidth, registerFont
 from reportlab.pdfbase.ttfonts import TTFont
 from sheet_types import sheet_types
 import os
+import sys
 
-
+def resource_path(rel_path: str):
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, rel_path)
+    return os.path.join(os.path.dirname(__file__), rel_path)
 
 class LabelMaker:
     '''
@@ -21,7 +25,7 @@ class LabelMaker:
         self.font_size = font_size
         self.text_anchor = text_anchor
 
-        self.font_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "./Arial-Bold.ttf"))
+        self.font_path = resource_path("Arial-Bold.ttf")
 
         specs = labels.Specification(sheet_type['sheet_width'], 
                                      sheet_type['sheet_height'], 
