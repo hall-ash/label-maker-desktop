@@ -18,7 +18,7 @@
     ],
     "asar": true,
     "mac": { "target": ["dmg", "zip"], "category": "public.app-category.productivity" },
-    "win": { "target": ["nsis", "zip"] },
+    "win": { "target": ["nsis", "zip"], "sign": false },
     "linux": { "target": ["AppImage", "deb"] }
   },
    "scripts": {
@@ -26,7 +26,9 @@
     "electron:dev": "wait-on tcp:3000 && cross-env NODE_ENV=development ELECTRON_START_URL=http://localhost:3000 electron .",
     "dev": "concurrently -k -r \"npm:react:start\" \"npm:electron:dev\"",
     "start": "cross-env NODE_ENV=production electron .",
-    "build:ui": "npm --prefix frontend run build"
+    "build:ui": "npm --prefix frontend run build",
+    "dist:dir": "npm run build:ui && cross-env NODE_ENV=production CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --dir --win",
+    "dist": "npm run build:ui && cross-env NODE_ENV=production electron-builder"
   },
   "dependencies": {
     "electron-store": "^10.1.0"
