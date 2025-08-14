@@ -22,7 +22,8 @@
     "asar": true,
     "mac": { "target": ["dmg", "zip"], "category": "public.app-category.productivity" },
     "win": {
-  "target": ["nsis", "zip"],
+  "target": [{ "target": "portable", "arch": ["x64"] }],
+  "artifactName": "LabelMaker-Portable-${version}.exe",
   "signAndEditExecutable": false,
   "verifyUpdateCodeSignature": false,
   "icon": "assets/icons/favicon(1).ico"
