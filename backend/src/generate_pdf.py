@@ -38,7 +38,7 @@ def generate_pdf(formData):
         text_anchor=text_anchor)
 
     label_maker.save(save_path)
-    os.startfile(save_path)
+
     return 'success'
 
 
@@ -50,6 +50,7 @@ if __name__ == "__main__":
 
         if result == 'success':
             print('success')  
+            sys.stdout.flush()
             sys.exit(0)
      
     except PermissionError:
